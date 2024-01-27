@@ -6,6 +6,7 @@ This is a Miro Clone App project. It was developed for learning purposes.
 
 - Next.js 14
 - Tailwind
+- Convex 
 
 ## Project Initialization Steps
 
