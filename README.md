@@ -7,12 +7,17 @@ This is a Miro Clone App project. It was developed for learning purposes.
 - Next.js 14
 - Tailwind
 - Convex 
+- Clerk
 
 ## Project Initialization Steps
 
 Create .env file in project directory. You need to fill variables below in that file.
 
 ```bash
+CONVEX_DEPLOYMENT=YOUR_CONVEX_DEPLOYMENT
+NEXT_PUBLIC_CONVEX_URL=YOUR_NEXT_PUBLIC_CONVEX_URL
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=YOUR_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+CLERK_SECRET_KEY=YOUR_CLERK_SECRET_KEY
 ```
 
 ## Installation
