@@ -6,7 +6,7 @@ This is a Miro Clone App project. It was developed for learning purposes.
 
 - Next.js 14
 - Tailwind
-- Convex 
+- Convex
 - Clerk
 
 ## Project Initialization Steps
@@ -28,7 +28,13 @@ To install this project follow the steps after cloning.
   npm install
 ```
 
-Then to start app
+To start backend app
+
+```bash
+  npx convex dev
+```
+
+Then to start frontend app
 
 ```bash
   npm run dev
