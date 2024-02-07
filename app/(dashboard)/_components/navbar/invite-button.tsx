@@ -1,9 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { OrganizationProfile } from '@clerk/nextjs';
+import { OrganizationProfile, useOrganization } from '@clerk/nextjs';
 import { Plus } from 'lucide-react';
 
 export const InviteButton = () => {
+  const { organization } = useOrganization();
+
+  if (!organization) {
+    return null;
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
