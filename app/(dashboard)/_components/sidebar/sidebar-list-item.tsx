@@ -1,5 +1,6 @@
 'use client';
 
+import { Hint } from '@/components/hint';
 import { cn } from '@/lib/utils';
 import { useOrganization, useOrganizationList } from '@clerk/nextjs';
 import Image from 'next/image';
@@ -24,16 +25,18 @@ export const SidebarListItem = ({ id, name, imageUrl }: ItemProps) => {
 
   return (
     <div className="relative aspect-square">
-      <Image
-        src={imageUrl}
-        onClick={handleClick}
-        alt={name}
-        fill
-        className={cn(
-          'cursor-pointer rounded-md opacity-75 transition hover:opacity-100',
-          isActive && 'opacity-100'
-        )}
-      />
+      <Hint label={name} side="right" align="start" sideOffset={16}>
+        <Image
+          src={imageUrl}
+          onClick={handleClick}
+          alt={name}
+          fill
+          className={cn(
+            'cursor-pointer rounded-md opacity-75 transition hover:opacity-100',
+            isActive && 'opacity-100'
+          )}
+        />
+      </Hint>
     </div>
   );
 };
