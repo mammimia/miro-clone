@@ -7,6 +7,7 @@ import { useOrganization } from '@clerk/nextjs';
 import { useMutation } from 'convex/react';
 import Image from 'next/image';
 import React from 'react';
+import { toast } from 'sonner';
 
 const EmptyBoards = () => {
   const { organization } = useOrganization();
@@ -15,7 +16,14 @@ const EmptyBoards = () => {
   const handleClick = () => {
     if (!organization) return;
 
-    create({ orgId: organization.id, title: 'My first board' });
+    create({ orgId: organization.id, title: 'My first board' })
+      .then((id) => {
+        toast.success('Board created');
+        // TODO: Navigate to the board/:id
+      })
+      .catch(() => {
+        toast.error('Failed to create board');
+      });
   };
 
   return (
