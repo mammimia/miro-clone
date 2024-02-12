@@ -1,10 +1,11 @@
 'use client';
 
+import { api } from '@/convex/_generated/api';
 import { useQuery } from 'convex/react';
+import { BoardCard } from './board-card';
 import EmptyBoards from './sidebar/empty-boards';
 import EmptyFavorites from './sidebar/empty-favorites';
 import EmptySearch from './sidebar/empty-search';
-import { api } from '@/convex/_generated/api';
 
 interface BoardListProps {
   orgId: string;
@@ -33,5 +34,26 @@ export const BoardList = ({ orgId, query }: BoardListProps) => {
     return <EmptyBoards />;
   }
 
-  return <div>{JSON.stringify(data)}</div>;
+  return (
+    <div>
+      <h2 className="text-3xl">
+        {query.favorites ? 'Favorite boards' : 'Team boards'}
+      </h2>
+      <div className="mt-8 grid grid-cols-1 gap-5 pb-10 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+        {data.map((board) => (
+          <BoardCard
+            key={board._id}
+            id={board._id}
+            title={board.title}
+            imageUrl={board.imageUrl}
+            authorId={board.authorId}
+            authorName={board.authorName}
+            createdAt={board._creationTime}
+            orgId={board.orgId}
+            isFavorite={false}
+          />
+        ))}
+      </div>
+    </div>
+  );
 };
