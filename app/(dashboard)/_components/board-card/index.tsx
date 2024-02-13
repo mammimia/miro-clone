@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { BoardFooter } from './board-footer';
 import { Overlay } from './overlay';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface BoardCardProps {
   id: string;
@@ -49,5 +50,13 @@ export const BoardCard = ({
         />
       </div>
     </Link>
+  );
+};
+
+BoardCard.Skeleton = function BoardCardSkeleton() {
+  return (
+    <div className="aspect-[100/127] justify-between rounded-lg">
+      <Skeleton className="h-full w-full" />
+    </div>
   );
 };
