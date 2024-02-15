@@ -1,5 +1,5 @@
-import { mutation } from './_generated/server';
 import { v } from 'convex/values';
+import { mutation } from './_generated/server';
 
 const images = [
   '/placeholders/1.svg',
@@ -37,5 +37,30 @@ export const create = mutation({
     });
 
     return board;
+  }
+});
+
+export const remove = mutation({
+  args: {
+    id: v.id('boards')
+  },
+  handler: async (contex, args) => {
+    const identity = await contex.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error('Unauthorized');
+    }
+
+    const board = await contex.db.get(args.id);
+
+    if (!board) {
+      throw new Error('Board not found');
+    }
+
+    if (board.authorId !== identity.subject) {
+      throw new Error('Unauthorized');
+    }
+
+    await contex.db.delete(args.id);
   }
 });
