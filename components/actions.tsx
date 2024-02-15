@@ -11,6 +11,8 @@ import { useApiMutation } from '@/hooks/use-api-mutation';
 import { DropdownMenuContentProps } from '@radix-ui/react-dropdown-menu';
 import { Link2, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { ConfirmModal } from '@/components/confirm-modal';
+import { Button } from '@/components/ui/button';
 
 interface ActionsProps {
   id: string;
@@ -27,7 +29,7 @@ export const Actions = ({
   side,
   sideOffset
 }: ActionsProps) => {
-  const { mutate: remove } = useApiMutation(api.board.remove);
+  const { mutate: remove, pending } = useApiMutation(api.board.remove);
 
   const handleCopyLink = () => {
     navigator.clipboard
@@ -66,10 +68,20 @@ export const Actions = ({
           <Link2 className="mr-2 h-4 w-4" />
           Copy board link
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer p-3" onClick={handleDelete}>
-          <Trash2 className="mr-2 h-4 w-4" />
-          Delete board
-        </DropdownMenuItem>
+        <ConfirmModal
+          header="Delete board?"
+          description="This will delete the board and all of its contents."
+          disabled={pending}
+          onConfirm={handleDelete}
+        >
+          <Button
+            className="w-full cursor-pointer justify-start p-3 text-sm font-normal"
+            variant="ghost"
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            Delete board
+          </Button>
+        </ConfirmModal>
       </DropdownMenuContent>
     </DropdownMenu>
   );
