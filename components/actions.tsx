@@ -1,14 +1,15 @@
 'use client';
 
-import { DropdownMenuContentProps } from '@radix-ui/react-dropdown-menu';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { Link2 } from 'lucide-react';
+import { api } from '@/convex/_generated/api';
+import { useApiMutation } from '@/hooks/use-api-mutation';
+import { DropdownMenuContentProps } from '@radix-ui/react-dropdown-menu';
+import { Link2, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface ActionsProps {
@@ -26,6 +27,8 @@ export const Actions = ({
   side,
   sideOffset
 }: ActionsProps) => {
+  const { mutate: remove } = useApiMutation(api.board.remove);
+
   const handleCopyLink = () => {
     navigator.clipboard
       .writeText(`${window.location.origin}/board/${id}`)
@@ -34,6 +37,16 @@ export const Actions = ({
       })
       .catch(() => {
         toast.error('Failed to copy link to clipboard');
+      });
+  };
+
+  const handleDelete = () => {
+    remove({ id })
+      .then(() => {
+        toast.success('Board deleted');
+      })
+      .catch(() => {
+        toast.error('Failed to delete board');
       });
   };
 
@@ -52,6 +65,10 @@ export const Actions = ({
         >
           <Link2 className="mr-2 h-4 w-4" />
           Copy board link
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer p-3" onClick={handleDelete}>
+          <Trash2 className="mr-2 h-4 w-4" />
+          Delete board
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
