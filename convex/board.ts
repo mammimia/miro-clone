@@ -64,3 +64,47 @@ export const remove = mutation({
     await contex.db.delete(args.id);
   }
 });
+
+export const update = mutation({
+  args: {
+    id: v.id('boards'),
+    title: v.string()
+  },
+  handler: async (contex, args) => {
+    const identity = await contex.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error('Unauthorized');
+    }
+
+    const board = await contex.db.get(args.id);
+
+    if (!board) {
+      throw new Error('Board not found');
+    }
+
+    if (board.authorId !== identity.subject) {
+      throw new Error('Unauthorized');
+    }
+
+    const title = args.title?.trim();
+
+    if (!title) {
+      throw new Error('Title is required');
+    }
+
+    if (title.length < 3) {
+      throw new Error('Title is too short');
+    }
+
+    if (title.length > 50) {
+      throw new Error('Title is too long');
+    }
+
+    const updatedBoard = await contex.db.patch(args.id, {
+      title
+    });
+
+    return updatedBoard;
+  }
+});
