@@ -1,5 +1,7 @@
 'use client';
 
+import { ConfirmModal } from '@/components/confirm-modal';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,11 +10,10 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { api } from '@/convex/_generated/api';
 import { useApiMutation } from '@/hooks/use-api-mutation';
+import { useRenameModal } from '@/store/use-rename-modal';
 import { DropdownMenuContentProps } from '@radix-ui/react-dropdown-menu';
-import { Link2, Trash2 } from 'lucide-react';
+import { Link2, Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { ConfirmModal } from '@/components/confirm-modal';
-import { Button } from '@/components/ui/button';
 
 interface ActionsProps {
   id: string;
@@ -29,6 +30,7 @@ export const Actions = ({
   side,
   sideOffset
 }: ActionsProps) => {
+  const { onOpen } = useRenameModal();
   const { mutate: remove, pending } = useApiMutation(api.board.remove);
 
   const handleCopyLink = () => {
@@ -67,6 +69,13 @@ export const Actions = ({
         >
           <Link2 className="mr-2 h-4 w-4" />
           Copy board link
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="cursor-pointer p-3"
+          onClick={() => onOpen(id, title)}
+        >
+          <Pencil className="mr-2 h-4 w-4" />
+          Rename board
         </DropdownMenuItem>
         <ConfirmModal
           header="Delete board?"
