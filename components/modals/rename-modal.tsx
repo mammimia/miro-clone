@@ -18,7 +18,7 @@ import { Input } from '../ui/input';
 import { toast } from 'sonner';
 
 export const RenameModal = () => {
-  const { mutate: update } = useApiMutation(api.board.update);
+  const { mutate: update, pending } = useApiMutation(api.board.update);
   const { isOpen, initialValues, onClose } = useRenameModal();
   const [title, setTitle] = useState(initialValues.title);
 
@@ -49,7 +49,7 @@ export const RenameModal = () => {
         <DialogDescription>Enter a new title for this board</DialogDescription>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
-            disabled={false}
+            disabled={pending}
             required
             maxLength={60}
             value={title}
@@ -62,7 +62,7 @@ export const RenameModal = () => {
                 Cancel
               </Button>
             </DialogClose>
-            <Button disabled={false} type="submit">
+            <Button disabled={pending} type="submit">
               Save
             </Button>
           </DialogFooter>
