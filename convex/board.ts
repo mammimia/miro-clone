@@ -108,3 +108,42 @@ export const update = mutation({
     return updatedBoard;
   }
 });
+
+export const favorite = mutation({
+  args: { id: v.id('boards'), orgId: v.string() },
+  handler: async (contex, args) => {
+    const identity = await contex.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error('Unauthorized');
+    }
+
+    const board = await contex.db.get(args.id);
+
+    if (!board) {
+      throw new Error('Board not found');
+    }
+
+    const userId = identity.subject;
+
+    const existingFavorite = await contex.db
+      .query('userFavorites')
+      .withIndex('by_user_board_org', (q) =>
+        q.eq('userId', userId).eq('boardId', args.id).eq('orgId', args.orgId)
+      )
+      .unique();
+
+    if (existingFavorite) {
+      await contex.db.delete(existingFavorite._id);
+      return board;
+    }
+
+    await contex.db.insert('userFavorites', {
+      orgId: args.orgId,
+      userId,
+      boardId: args.id
+    });
+
+    return board;
+  }
+});
